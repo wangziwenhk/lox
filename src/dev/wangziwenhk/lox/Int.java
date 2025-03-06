@@ -1,4 +1,4 @@
-package dev.wangziwenhk.rox;
+package dev.wangziwenhk.lox;
 
 class Int extends Value {
     private int value;

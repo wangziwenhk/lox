@@ -1,4 +1,4 @@
-package dev.wangziwenhk.rox.token;
+package dev.wangziwenhk.lox.TokenType;
 
 public class Token {
     Token(){

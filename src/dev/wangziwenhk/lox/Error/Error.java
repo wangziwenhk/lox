@@ -1,4 +1,4 @@
-package dev.wangziwenhk.rox.error;
+package dev.wangziwenhk.lox.Error;
 public class Error {
     private String message;
     public Error(String message){

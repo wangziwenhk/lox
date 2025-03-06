@@ -1,4 +1,4 @@
-package dev.wangziwenhk.rox;
+package dev.wangziwenhk.lox;
 
 public class Float extends Value {
     private double value;
