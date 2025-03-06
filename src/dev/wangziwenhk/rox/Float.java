@@ -12,7 +12,7 @@ public class Float extends Value {
     }
 
     @Override
-    public Object getValue() {
+    public java.lang.Double getValue() {
         return this.value;
     }
 }
