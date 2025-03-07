@@ -18,22 +18,22 @@ public class Scanner {
 
     static {
         keywords = new HashMap<>();
-        keywords.put("and",    AND);
-        keywords.put("class",  CLASS);
-        keywords.put("else",   ELSE);
-        keywords.put("false",  FALSE);
-        keywords.put("for",    FOR);
-        keywords.put("fun",    FUN);
-        keywords.put("if",     IF);
-        keywords.put("nil",    NIL);
-        keywords.put("or",     OR);
-        keywords.put("print",  PRINT);
+        keywords.put("and", AND);
+        keywords.put("class", CLASS);
+        keywords.put("else", ELSE);
+        keywords.put("false", FALSE);
+        keywords.put("for", FOR);
+        keywords.put("fun", FUN);
+        keywords.put("if", IF);
+        keywords.put("nil", NIL);
+        keywords.put("or", OR);
+        keywords.put("print", PRINT);
         keywords.put("return", RETURN);
-        keywords.put("super",  SUPER);
-        keywords.put("this",   THIS);
-        keywords.put("true",   TRUE);
-        keywords.put("var",    VAR);
-        keywords.put("while",  WHILE);
+        keywords.put("super", SUPER);
+        keywords.put("this", THIS);
+        keywords.put("true", TRUE);
+        keywords.put("var", VAR);
+        keywords.put("while", WHILE);
     }
 
     Scanner(String source) {
@@ -100,6 +100,12 @@ public class Scanner {
                 if (match('/')) {
                     // A comment goes until the end of the line.
                     while (peek() != '\n' && !isAtEnd()) advance();
+                } else if (match('*')) {
+                    do {
+                        while (peek() != '*' && !isAtEnd()) advance();
+                        advance();
+                    } while (peek() != '/');
+                    advance();
                 } else {
                     addToken(SLASH);
                 }
@@ -134,6 +140,7 @@ public class Scanner {
         }
     }
 
+    /// 后移一位
     private char advance() {
         return source.charAt(current++);
     }
