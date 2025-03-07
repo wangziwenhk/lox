@@ -2,7 +2,7 @@ package dev.wangziwenhk.lox;
 
 import java.util.List;
 
-public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>  {
+public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitLiteralExpr(Expr.Literal expr) {
         return expr.value;
@@ -21,16 +21,15 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>  {
     public Object visitUnaryExpr(Expr.Unary expr) {
         Object right = evaluate(expr.right);
 
-        switch (expr.operator.type) {
-            case BANG:
-                return !isTruthy(right);
-            case MINUS:
+        return switch (expr.operator.type) {
+            case BANG -> !isTruthy(right);
+            case MINUS -> {
                 checkNumberOperand(expr.operator, right);
-                return -(double) right;
-        }
+                yield -(double) right;
+            }
+            default -> null;
+        };
 
-        // Unreachable.
-        return null;
     }
 
     private void checkNumberOperand(Token operator, Object operand) {
@@ -115,6 +114,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>  {
             Lox.runtimeError(error);
         }
     }
+
     private String stringify(Object object) {
         if (object == null) return "nil";
 
