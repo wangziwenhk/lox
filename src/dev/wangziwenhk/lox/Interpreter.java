@@ -1,6 +1,8 @@
 package dev.wangziwenhk.lox;
 
-public class Interpreter implements Expr.Visitor<Object> {
+import java.util.List;
+
+public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void>  {
     @Override
     public Object visitLiteralExpr(Expr.Literal expr) {
         return expr.value;
@@ -125,5 +127,32 @@ public class Interpreter implements Expr.Visitor<Object> {
         }
 
         return object.toString();
+    }
+
+    @Override
+    public Void visitExpressionStmt(Stmt.Expression stmt) {
+        evaluate(stmt.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitPrintStmt(Stmt.Print stmt) {
+        Object value = evaluate(stmt.expression);
+        System.out.println(stringify(value));
+        return null;
+    }
+
+    void interpret(List<Stmt> statements) {
+        try {
+            for (Stmt statement : statements) {
+                execute(statement);
+            }
+        } catch (RuntimeError error) {
+            Lox.runtimeError(error);
+        }
+    }
+
+    private void execute(Stmt stmt) {
+        stmt.accept(this);
     }
 }
