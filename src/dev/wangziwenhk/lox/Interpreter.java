@@ -2,7 +2,7 @@ package dev.wangziwenhk.lox;
 
 import java.util.List;
 
-public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Object> {
     private Environment environment = new Environment();
 
     @Override
@@ -132,9 +132,8 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Void visitExpressionStmt(Stmt.Expression stmt) {
-        evaluate(stmt.expression);
-        return null;
+    public Object visitExpressionStmt(Stmt.Expression stmt) {
+        return evaluate(stmt.expression);
     }
 
     @Override
@@ -161,18 +160,20 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
 
-    void interpret(List<Stmt> statements) {
+    Object interpret(List<Stmt> statements) {
+        Object result = null;
         try {
             for (Stmt statement : statements) {
-                execute(statement);
+                result = execute(statement);
             }
         } catch (RuntimeError error) {
             Lox.runtimeError(error);
         }
+        return result;
     }
 
-    private void execute(Stmt stmt) {
-        stmt.accept(this);
+    private Object execute(Stmt stmt) {
+        return stmt.accept(this);
     }
 
     @Override
@@ -180,5 +181,25 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object value = evaluate(expr.value);
         environment.assign(expr.name, value);
         return value;
+    }
+
+    @Override
+    public Void visitBlockStmt(Stmt.Block stmt) {
+        executeBlock(stmt.statements, new Environment(environment));
+        return null;
+    }
+
+    void executeBlock(List<Stmt> statements,
+                      Environment environment) {
+        Environment previous = this.environment;
+        try {
+            this.environment = environment;
+
+            for (Stmt statement : statements) {
+                execute(statement);
+            }
+        } finally {
+            this.environment = previous;
+        }
     }
 }
