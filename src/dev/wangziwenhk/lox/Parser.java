@@ -243,8 +243,14 @@ public class Parser {
         if (match(PRINT)) return printStatement();
         if (match(WHILE)) return whileStatement();
         if (match(FOR)) return forStatement();
+        if (match(BREAK)) return breakStatement();
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
         return expressionStatement();
+    }
+
+    private Stmt breakStatement() {
+        consume(SEMICOLON, "Expect ';' after variable declaration.");
+        return new Stmt.Break();
     }
 
     private Stmt forStatement() {

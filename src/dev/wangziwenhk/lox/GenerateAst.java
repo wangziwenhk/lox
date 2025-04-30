@@ -29,7 +29,8 @@ public class GenerateAst {
                         " Stmt elseBranch",
                 "Print      : Expr expression",
                 "Var        : Token name, Expr initializer",
-                "While      : Expr condition, Stmt body"
+                "While      : Expr condition, Stmt body",
+                "Break      : "
         ));
     }
 
@@ -73,10 +74,11 @@ public class GenerateAst {
         // Store parameters in fields.
         String[] fields = fieldList.split(", ");
         for (String field : fields) {
-            String name = field.split(" ")[1];
+            String[] nameList = field.split(" ");
+            if (nameList.length < 2) break;
+            String name = nameList[1];
             writer.println("      this." + name + " = " + name + ";");
         }
-
         writer.println("    }");
 
         writer.println();
@@ -89,6 +91,9 @@ public class GenerateAst {
         // Fields.
         writer.println();
         for (String field : fields) {
+            if(field.isEmpty()){
+                continue;
+            }
             writer.println("    final " + field + ";");
         }
 
