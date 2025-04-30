@@ -18,14 +18,18 @@ public class GenerateAst {
                 "Binary   : Expr left, Token operator, Expr right",
                 "Grouping : Expr expression",
                 "Literal  : Object value",
+                "Logical  : Expr left, Token operator, Expr right",
                 "Unary    : Token operator, Expr right",
                 "Variable : Token name"
         ));
         defineAst(outputDir, "Stmt", Arrays.asList(
                 "Block      : List<Stmt> statements",
                 "Expression : Expr expression",
+                "If         : Expr condition, Stmt thenBranch," +
+                        " Stmt elseBranch",
                 "Print      : Expr expression",
-                "Var        : Token name, Expr initializer"
+                "Var        : Token name, Expr initializer",
+                "While      : Expr condition, Stmt body"
         ));
     }
 
@@ -38,8 +42,8 @@ public class GenerateAst {
 
         writer.println("package dev.wangziwenhk.lox;");
         writer.println();
-//        writer.println("import java.util.List;");
-//        writer.println();
+        writer.println("import java.util.List;");
+        writer.println();
         writer.println("abstract class " + baseName + " {");
 
         defineVisitor(writer, baseName, types);

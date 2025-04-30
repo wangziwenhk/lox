@@ -27,6 +27,14 @@ class AstPrinter implements Expr.Visitor<String> {
         return parenthesize(expr.operator.lexeme, expr.right);
     }
 
+    /**
+     * Wraps the given name and expressions into a parenthesized string representation.
+     * Each expression is visited and its string representation is appended to the result.
+     *
+     * @param name  the name or operator to be placed at the beginning of the parenthesized expression
+     * @param exprs a variable number of expressions to be included in the parenthesized structure
+     * @return a string representing the parenthesized expression, including the name and evaluated expressions
+     */
     private String parenthesize(String name, Expr... exprs) {
         StringBuilder builder = new StringBuilder();
 
@@ -41,13 +49,7 @@ class AstPrinter implements Expr.Visitor<String> {
     }
 
     public static void main(String[] args) {
-        Expr expression = new Expr.Binary(
-                new Expr.Unary(
-                        new Token(TokenType.MINUS, "-", null, 1),
-                        new Expr.Literal(123)),
-                new Token(TokenType.STAR, "*", null, 1),
-                new Expr.Grouping(
-                        new Expr.Literal(45.67)));
+        Expr expression = new Expr.Logical(new Expr.Literal(1), new Token(TokenType.AND, "", null, 0), new Expr.Literal(1));
 
         System.out.println(new AstPrinter().print(expression));
     }
@@ -60,5 +62,10 @@ class AstPrinter implements Expr.Visitor<String> {
     @Override
     public String visitAssignExpr(Expr.Assign expr) {
         return parenthesize("=", expr);
+    }
+
+    @Override
+    public String visitLogicalExpr(Expr.Logical expr) {
+        return parenthesize(expr.operator.toString(), expr.left, expr.right);
     }
 }
