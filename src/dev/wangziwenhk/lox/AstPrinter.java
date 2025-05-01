@@ -73,4 +73,14 @@ class AstPrinter implements Expr.Visitor<String> {
     public String visitCallExpr(Expr.Call expr) {
         return "";
     }
+
+    @Override
+    public String visitGetExpr(Expr.Get expr) {
+        return "";
+    }
+
+    @Override
+    public String visitSetExpr(Expr.Set expr) {
+        return "";
+    }
 }

@@ -2,7 +2,7 @@ package dev.wangziwenhk.lox;
 
 import java.util.List;
 
-class LoxFunction implements LoxCallable {
+public class LoxFunction implements LoxCallable {
     private final Stmt.Function declaration;
     private final Environment closure;
 
