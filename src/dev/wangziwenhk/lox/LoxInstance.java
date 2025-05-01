@@ -13,7 +13,7 @@ public class LoxInstance {
 
     @Override
     public String toString() {
-        return klass.name + " instance";
+        return "[Object " + klass.name + "]";
     }
 
     Object get(Token name) {
@@ -22,7 +22,7 @@ public class LoxInstance {
         }
 
         LoxFunction method = klass.findMethod(name.lexeme);
-        if (method != null) return method;
+        if (method != null) return method.bind(this);
 
         throw new RuntimeError(name,
                 "Undefined property '" + name.lexeme + "'.");

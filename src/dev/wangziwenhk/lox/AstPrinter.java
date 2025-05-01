@@ -83,4 +83,9 @@ class AstPrinter implements Expr.Visitor<String> {
     public String visitSetExpr(Expr.Set expr) {
         return "";
     }
+
+    @Override
+    public String visitThisExpr(Expr.This expr) {
+        return "";
+    }
 }
