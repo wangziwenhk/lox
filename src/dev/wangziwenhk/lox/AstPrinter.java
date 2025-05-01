@@ -68,4 +68,9 @@ class AstPrinter implements Expr.Visitor<String> {
     public String visitLogicalExpr(Expr.Logical expr) {
         return parenthesize(expr.operator.toString(), expr.left, expr.right);
     }
+
+    @Override
+    public String visitCallExpr(Expr.Call expr) {
+        return "";
+    }
 }
