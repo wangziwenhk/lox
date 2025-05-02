@@ -1,3 +1,4 @@
 .idea
 out
 lox.iml
+vm/cmake-build-debug
